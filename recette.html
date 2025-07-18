@@ -1,0 +1,43 @@
+<!-- recette.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recette - Nutrition Helper</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+  <div class="max-w-2xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
+    <h1 id="recipeTitle" class="text-3xl font-bold text-purple-700 mb-4"></h1>
+    <p id="recipeDescription" class="text-gray-700 mb-4"></p>
+    <div id="recipeNutrients" class="flex gap-6 text-sm text-gray-600 mb-4 font-medium">
+      <!-- macros -->
+    </div>
+    <div class="text-lg font-semibold text-gray-800 mb-2">Apport calorique</div>
+    <p id="recipeCalories" class="text-purple-600 text-2xl font-bold mb-6"></p>
+
+    <a href="index.html" class="text-blue-600 hover:underline">← Retour</a>
+  </div>
+
+  <script>
+    const recipe = JSON.parse(localStorage.getItem('selectedRecipe'));
+
+    if (recipe) {
+      document.getElementById('recipeTitle').textContent = recipe.title;
+      document.getElementById('recipeDescription').textContent = recipe.description;
+      document.getElementById('recipeCalories').textContent = recipe.calories + ' kcal';
+
+      const [p, g, l] = recipe.nutrients.split(', ');
+      const nutrientContainer = document.getElementById('recipeNutrients');
+      nutrientContainer.innerHTML = `
+        <span class="text-blue-600">${p}</span>
+        <span class="text-green-600">${g}</span>
+        <span class="text-yellow-600">${l}</span>
+      `;
+    } else {
+      document.body.innerHTML = '<p class="text-center mt-20 text-gray-600">Aucune recette sélectionnée.</p>';
+    }
+  </script>
+</body>
+</html>
