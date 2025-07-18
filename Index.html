@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Helper - Votre assistant nutritionnel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .nutri-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .slide-in {
+            animation: slideIn 0.5s forwards;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold"><i class="fas fa-utensils mr-2"></i>Nutrition Helper</h1>
+                <button id="infoBtn" class="text-white hover:text-gray-200">
+                    <i class="fas fa-info-circle text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Formulaire de profil -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 slide-in">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4"><i class="fas fa-user-circle mr-2 text-purple-600"></i>Votre profil</h2>
+            <form id="profileForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div>
+                    <label for="age" class="block text-sm font-medium text-gray-700 mb-1">Âge</label>
+                    <input type="number" id="age" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="30" required>
+                </div>
+                <div>
+                    <label for="weight" class="block text-sm font-medium text-gray-700 mb-1">Poids (kg)</label>
+                    <input type="number" id="weight" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="70" required>
+                </div>
+                <div>
+                    <label for="height" class="block text-sm font-medium text-gray-700 mb-1">Taille (cm)</label>
+                    <input type="number" id="height" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="175" required>
+                </div>
+                <div>
+                    <label for="activity" class="block text-sm font-medium text-gray-700 mb-1">Activité physique</label>
+                    <select id="activity" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                        <option value="1.2">Sédentaire (peu ou pas d'exercice)</option>
+                        <option value="1.375">Légèrement actif (1-3 jours/semaine)</option>
+                        <option value="1.55">Modérément actif (3-5 jours/semaine)</option>
+                        <option value="1.725">Très actif (6-7 jours/semaine)</option>
+                        <option value="1.9">Extrêmement actif (sport intense quotidien)</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Sexe</label>
+                    <div class="flex space-x-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="gender" value="male" checked class="h-4 w-4 text-purple-600 focus:ring-purple-500">
+                            <span class="ml-2 text-gray-700">Homme</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="gender" value="female" class="h-4 w-4 text-purple-600 focus:ring-purple-500">
+                            <span class="ml-2 text-gray-700">Femme</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="md:col-span-2">
+                    <label for="goal" class="block text-sm font-medium text-gray-700 mb-1">Objectif</label>
+                    <select id="goal" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                        <option value="maintain">Maintenir mon poids</option>
+                        <option value="lose">Perdre du poids</option>
+                        <option value="gain">Prendre du poids</option>
+                    </select>
+                </div>
+                <div class="md:col-span-4">
+                    <button type="submit" class="w-full gradient-bg text-white py-3 px-6 rounded-lg font-semibold hover:opacity-90 transition duration-300 shadow-lg">
+                        <i class="fas fa-calculator mr-2"></i>Calculer mes besoins
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Résultats -->
+        <section id="resultsSection" class="hidden bg-white rounded-xl shadow-md p-6 mb-8 slide-in">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6"><i class="fas fa-chart-line mr-2 text-purple-600"></i>Vos besoins nutritionnels</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-purple-50 rounded-lg p-6 border border-purple-100">
+                    <h3 class="font-semibold text-purple-800 mb-2"><i class="fas fa-bolt mr-2"></i>Calories quotidiennes</h3>
+                    <p class="text-3xl font-bold text-purple-600" id="caloriesResult">0</p>
+                    <p class="text-sm text-gray-600 mt-2">Votre apport calorique journalier recommandé</p>
+                </div>
+                <div class="bg-blue-50 rounded-lg p-6 border border-blue-100">
+                    <h3 class="font-semibold text-blue-800 mb-2"><i class="fas fa-dumbbell mr-2"></i>Protéines</h3>
+                    <p class="text-3xl font-bold text-blue-600" id="proteinsResult">0g</p>
+                    <p class="text-sm text-gray-600 mt-2">Soit <span id="proteinsPercent">0</span>% de vos calories</p>
+                </div>
+                <div class="bg-green-50 rounded-lg p-6 border border-green-100">
+                    <h3 class="font-semibold text-green-800 mb-2"><i class="fas fa-bread-slice mr-2"></i>Glucides</h3>
+                    <p class="text-3xl font-bold text-green-600" id="carbsResult">0g</p>
+                    <p class="text-sm text-gray-600 mt-2">Soit <span id="carbsPercent">0</span>% de vos calories</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-yellow-50 rounded-lg p-6 border border-yellow-100">
+                    <h3 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-cheese mr-2"></i>Lipides</h3>
+                    <p class="text-3xl font-bold text-yellow-600" id="fatsResult">0g</p>
+                    <p class="text-sm text-gray-600 mt-2">Soit <span id="fatsPercent">0</span>% de vos calories</p>
+                </div>
+                <div class="bg-red-50 rounded-lg p-6 border border-red-100">
+                    <h3 class="font-semibold text-red-800 mb-2"><i class="fas fa-tint mr-2"></i>Eau</h3>
+                    <p class="text-3xl font-bold text-red-600" id="waterResult">0L</p>
+                    <p class="text-sm text-gray-600 mt-2">Quantité d'eau recommandée par jour</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menus recommandés -->
+        <section id="menusSection" class="hidden bg-white rounded-xl shadow-md p-6 slide-in">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6"><i class="fas fa-utensils mr-2 text-purple-600"></i>Menus recommandés</h2>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">Répartition des repas</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <div class="bg-indigo-100 rounded-lg p-4 text-center">
+                        <p class="font-medium text-indigo-800">Petit-déjeuner</p>
+                        <p class="text-sm text-gray-600"><span id="breakfastPercent">25</span>% des calories</p>
+                    </div>
+                    <div class="bg-blue-100 rounded-lg p-4 text-center">
+                        <p class="font-medium text-blue-800">Déjeuner</p>
+                        <p class="text-sm text-gray-600"><span id="lunchPercent">35</span>% des calories</p>
+                    </div>
+                    <div class="bg-purple-100 rounded-lg p-4 text-center">
+                        <p class="font-medium text-purple-800">Collation</p>
+                        <p class="text-sm text-gray-600"><span id="snackPercent">15</span>% des calories</p>
+                    </div>
+                    <div class="bg-pink-100 rounded-lg p-4 text-center">
+                        <p class="font-medium text-pink-800">Dîner</p>
+                        <p class="text-sm text-gray-600"><span id="dinnerPercent">25</span>% des calories</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="menuContainer">
+                <!-- Les menus seront générés ici par JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal d'information -->
+    <div id="infoModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">À propos de Nutrition Helper</h3>
+                <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4 text-gray-700">
+                <p>Cette application calcule vos besoins nutritionnels journaliers en fonction de votre profil (âge, poids, taille, niveau d'activité) et vous propose des menus adaptés à vos objectifs.</p>
+                <p>Les calculs sont basés sur :</p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>L'équation de Mifflin-St Jeor pour le métabolisme de base</li>
+                    <li>Le niveau d'activité physique (facteur PAL)</li>
+                    <li>Les recommandations de l'OMS pour la répartition des macronutriments</li>
+                </ul>
+                <p class="text-sm text-gray-500">Note : Ces recommandations sont indicatives. Consultez un professionnel de santé pour des conseils personnalisés.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="gradient-bg text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2023 Nutrition Helper - Votre assistant nutritionnel personnel</p>
+            <p class="text-sm opacity-80 mt-2">Calculs basés sur les recommandations de l'OMS et de la FDA</p>
+        </div>
+    </footer>
+
+    <script>
+        // Gestion du modal
+        const infoBtn = document.getElementById('infoBtn');
+        const infoModal = document.getElementById('infoModal');
+        const closeModal = document.getElementById('closeModal');
+
+        infoBtn.addEventListener('click', () => {
+            infoModal.classList.remove('hidden');
+        });
+
+        closeModal.addEventListener('click', () => {
+            infoModal.classList.add('hidden');
+        });
+
+        // Base de données des menus
+        const menusDatabase = {
+            maintain: {
+                breakfast: [
+                    {
+                        title: "Porridge protéiné",
+                        calories: 350,
+                        description: "Flocons d'avoine, lait d'amande, banane, noix et graines",
+                        nutrients: "P: 15g, G: 50g, L: 10g"
+                    },
+                    {
+                        title: "Omelette aux légumes",
+                        calories: 400,
+                        description: "Œufs, épinards, tomates, fromage de chèvre, pain complet",
+                        nutrients: "P: 25g, G: 30g, L: 18g"
+                    }
+                ],
+                lunch: [
+                    {
+                        title: "Poulet et quinoa",
+                        calories: 550,
+                        description: "Filet de poulet grillé, quinoa, brocolis vapeur, avocat",
+                        nutrients: "P: 40g, G: 45g, L: 20g"
+                    },
+                    {
+                        title: "Salade de saumon",
+                        calories: 500,
+                        description: "Saumon grillé, mélange de salades, quinoa, tomates cerise, vinaigrette légère",
+                        nutrients: "P: 35g, G: 30g, L: 25g"
+                    }
+                ],
+                snack: [
+                    {
+                        title: "Smoothie vert",
+                        calories: 250,
+                        description: "Épinards, banane, lait d'amande, protéine en poudre",
+                        nutrients: "P: 20g, G: 30g, L: 5g"
+                    },
+                    {
+                        title: "Yaourt et fruits secs",
+                        calories: 200,
+                        description: "Yaourt grec nature, amandes, noix, miel",
+                        nutrients: "P: 15g, G: 15g, L: 10g"
+                    }
+                ],
+                dinner: [
+                    {
+                        title: "Dahl de lentilles",
+                        calories: 450,
+                        description: "Lentilles corail, lait de coco, épices, riz basmati",
+                        nutrients: "P: 25g, G: 60g, L: 12g"
+                    },
+                    {
+                        title: "Filet de blanc de dinde",
+                        calories: 400,
+                        description: "Blanc de dinde, purée de patate douce, haricots verts",
+                        nutrients: "P: 35g, G: 40g, L: 10g"
+                    }
+                ]
+            },
+            lose: {
+                breakfast: [
+                    {
+                        title: "Œufs brouillés légers",
+                        calories: 300,
+                        description: "2 œufs, blanc d'œuf, épinards, champignons, pain complet",
+                        nutrients: "P: 20g, G: 25g, L: 10g"
+                    },
+                    {
+                        title: "Smoothie bowl",
+                        calories: 280,
+                        description: "Fruits rouges, yaourt grec, graines de chia, flocons d'avoine",
+                        nutrients: "P: 15g, G: 35g, L: 8g"
+                    }
+                ],
+                lunch: [
+                    {
+                        title: "Salade de thon",
+                        calories: 450,
+                        description: "Thon naturel, salade verte, tomates, concombre, œuf dur, vinaigrette légère",
+                        nutrients: "P: 35g, G: 20g, L: 15g"
+                    },
+                    {
+                        title: "Poulet et légumes rôtis",
+                        calories: 400,
+                        description: "Blanc de poulet, courgettes, poivrons, aubergines, huile d'olive",
+                        nutrients: "P: 40g, G: 15g, L: 12g"
+                    }
+                ],
+                snack: [
+                    {
+                        title: "Fromage blanc et fruits",
+                        calories: 150,
+                        description: "Fromage blanc 0%, pomme, cannelle",
+                        nutrients: "P: 15g, G: 20g, L: 0g"
+                    },
+                    {
+                        title: "Bâtonnets de légumes",
+                        calories: 100,
+                        description: "Carottes, céleri, concombre, houmous léger",
+                        nutrients: "P: 5g, G: 10g, L: 3g"
+                    }
+                ],
+                dinner: [
+                    {
+                        title: "Soupe et omelette",
+                        calories: 350,
+                        description: "Soupe de légumes maison, omelette aux herbes",
+                        nutrients: "P: 25g, G: 20g, L: 12g"
+                    },
+                    {
+                        title: "Cabillaud vapeur",
+                        calories: 300,
+                        description: "Filet de cabillaud, ratatouille, riz complet",
+                        nutrients: "P: 30g, G: 25g, L: 8g"
+                    }
+                ]
+            },
+            gain: {
+                breakfast: [
+                    {
+                        title: "Pancakes protéinés",
+                        calories: 600,
+                        description: "Pancakes à la banane, œufs, flocons d'avoine, sirop d'érable, beurre de cacahuète",
+                        nutrients: "P: 30g, G: 75g, L: 20g"
+                    },
+                    {
+                        title: "Toast à l'avocat",
+                        calories: 550,
+                        description: "Pain complet, avocat, œufs pochés, saumon fumé",
+                        nutrients: "P: 25g, G: 40g, L: 30g"
+                    }
+                ],
+                lunch: [
+                    {
+                        title: "Steak et patates",
+                        calories: 700,
+                        description: "Steak haché 5%, patates douces rôties, haricots verts, sauce maison",
+                        nutrients: "P: 50g, G: 60g, L: 25g"
+                    },
+                    {
+                        title: "Pâtes au saumon",
+                        calories: 650,
+                        description: "Pâtes complètes, saumon frais, crème légère, brocolis",
+                        nutrients: "P: 40g, G: 70g, L: 20g"
+                    }
+                ],
+                snack: [
+                    {
+                        title: "Shake hypercalorique",
+                        calories: 400,
+                        description: "Lait entier, banane, beurre de cacahuète, flocons d'avoine, miel",
+                        nutrients: "P: 20g, G: 50g, L: 15g"
+                    },
+                    {
+                        title: "Barres énergétiques",
+                        calories: 350,
+                        description: "Mélange de fruits secs, noix, graines et miel",
+                        nutrients: "P: 15g, G: 40g, L: 18g"
+                    }
+                ],
+                dinner: [
+                    {
+                        title: "Risotto aux champignons",
+                        calories: 600,
+                        description: "Riz arborio, champignons, parmesan, bouillon de légumes",
+                        nutrients: "P: 25g, G: 80g, L: 20g"
+                    },
+                    {
+                        title: "Poulet curry",
+                        calories: 550,
+                        description: "Cuisse de poulet, curry, lait de coco, riz basmati",
+                        nutrients: "P: 40g, G: 50g, L: 25g"
+                    }
+                ]
+            }
+        };
+
+        // Gestion du formulaire
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Récupération des valeurs
+            const age = parseInt(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const activity = parseFloat(document.getElementById('activity').value);
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const goal = document.getElementById('goal').value;
+            
+            // Calcul du métabolisme de base (BMR)
+            let bmr;
+            if (gender === 'male') {
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+            
+            // Calcul des besoins caloriques (TDEE)
+            let tdee = bmr * activity;
+            
+            // Ajustement selon l'objectif
+            if (goal === 'lose') {
+                tdee = tdee * 0.85; // Réduction de 15% pour la perte de poids
+            } else if (goal === 'gain') {
+                tdee = tdee * 1.15; // Augmentation de 15% pour la prise de poids
+            }
+            
+            // Calcul des macronutriments
+            const proteins = Math.round(weight * 1.8); // 1.8g de protéine par kg de poids
+            const proteinsCal = proteins * 4;
+            
+            let fats, fatsCal;
+            if (goal === 'lose') {
+                fats = Math.round((tdee * 0.25) / 9); // 25% des calories en lipides
+                fatsCal = tdee * 0.25;
+            } else {
+                fats = Math.round((tdee * 0.3) / 9); // 30% des calories en lipides
+                fatsCal = tdee * 0.3;
+            }
+            
+            const carbsCal = tdee - proteinsCal - fatsCal;
+            const carbs = Math.round(carbsCal / 4);
+            
+            // Calcul de l'eau recommandée
+            const water = Math.round((weight * 0.035) * 10) / 10; // 35ml par kg de poids
+            
+            // Affichage des résultats
+            document.getElementById('caloriesResult').textContent = Math.round(tdee);
+            document.getElementById('proteinsResult').textContent = proteins + 'g';
+            document.getElementById('proteinsPercent').textContent = Math.round((proteinsCal / tdee) * 100);
+            document.getElementById('carbsResult').textContent = carbs + 'g';
+            document.getElementById('carbsPercent').textContent = Math.round((carbsCal / tdee) * 100);
+            document.getElementById('fatsResult').textContent = fats + 'g';
+            document.getElementById('fatsPercent').textContent = Math.round((fatsCal / tdee) * 100);
+            document.getElementById('waterResult').textContent = water + 'L';
+            
+            // Ajustement des pourcentages de repas selon l'objectif
+            if (goal === 'lose') {
+                document.getElementById('breakfastPercent').textContent = '30';
+                document.getElementById('lunchPercent').textContent = '35';
+                document.getElementById('snackPercent').textContent = '10';
+                document.getElementById('dinnerPercent').textContent = '25';
+            } else if (goal === 'gain') {
+                document.getElementById('breakfastPercent').textContent = '25';
+                document.getElementById('lunchPercent').textContent = '30';
+                document.getElementById('snackPercent').textContent = '20';
+                document.getElementById('dinnerPercent').textContent = '25';
+            } else {
+                document.getElementById('breakfastPercent').textContent = '25';
+                document.getElementById('lunchPercent').textContent = '35';
+                document.getElementById('snackPercent').textContent = '15';
+                document.getElementById('dinnerPercent').textContent = '25';
+            }
+            
+            // Affichage des sections de résultats
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('menusSection').classList.remove('hidden');
+            
+            // Génération des menus
+            generateMenus(goal, Math.round(tdee));
+            
+            // Scroll vers les résultats
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Fonction pour générer les menus
+        function generateMenus(goal, calories) {
+            const menuContainer = document.getElementById('menuContainer');
+            menuContainer.innerHTML = '';
+            
+            const meals = ['breakfast', 'lunch', 'snack', 'dinner'];
+            const mealNames = {
+                breakfast: 'Petit-déjeuner',
+                lunch: 'Déjeuner',
+                snack: 'Collation',
+                dinner: 'Dîner'
+            };
+            
+            // Sélection aléatoire de menus pour chaque repas
+            meals.forEach(meal => {
+                const availableMenus = menusDatabase[goal][meal];
+                const randomIndex = Math.floor(Math.random() * availableMenus.length);
+                const selectedMenu = availableMenus[randomIndex];
+                
+                // Calcul du pourcentage de calories par rapport au total
+                const caloriePercentage = Math.round((selectedMenu.calories / calories) * 100);
+                
+                // Création de la carte de menu
+                const menuCard = document.createElement('div');
+                menuCard.className = 'menu-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 transition duration-300';
+                menuCard.innerHTML = `
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">${mealNames[meal]}</h3>
+                            <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">${caloriePercentage}%</span>
+                        </div>
+                        <div class="h-32 mb-4 overflow-hidden rounded-lg">
+                            <div class="w-full h-full bg-gradient-to-r from-${getRandomColor()}-400 to-${getRandomColor()}-500 flex items-center justify-center text-white font-bold text-xl">
+                                ${selectedMenu.title.split(' ')[0]}
+                            </div>
+                        </div>
+                        <h4 class="font-semibold text-lg mb-2">${selectedMenu.title}</h4>
+                        <p class="text-gray-600 mb-4">${selectedMenu.description}</p>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-blue-600 font-medium">${selectedMenu.nutrients.split(', ')[0]}</span>
+                            <span class="text-green-600 font-medium">${selectedMenu.nutrients.split(', ')[1]}</span>
+                            <span class="text-yellow-600 font-medium">${selectedMenu.nutrients.split(', ')[2]}</span>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
+                            <span class="text-gray-700 font-medium">${selectedMenu.calories} kcal</span>
+                            <button class="text-purple-600 hover:text-purple-800 font-medium">
+                                <i class="fas fa-utensils mr-1"></i>Voir recette
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                menuContainer.appendChild(menuCard);
+            });
+        }
+        
+        // Fonction utilitaire pour obtenir une couleur aléatoire
+        function getRandomColor() {
+            const colors = ['purple', 'blue', 'green', 'yellow', 'red', 'indigo', 'pink'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+    </script>
+</body>
+</html>
