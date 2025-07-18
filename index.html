@@ -211,7 +211,7 @@
             infoModal.classList.add('hidden');
         });
 
-       // Base de données des menus
+          // Base de données des menus
 const menusDatabase = {
     maintain: {
         breakfast: [
@@ -219,25 +219,25 @@ const menusDatabase = {
                 title: "Porridge protéiné",
                 calories: 350,
                 description: "Flocons d'avoine, lait d'amande, banane, noix et graines",
-                nutriments: "P : 15 g, G : 50 g, L : 10 g"
+                nutrients: "P : 15 g, G : 50 g, L : 10 g"
             },
             {
                 title: "Omelette aux légumes",
                 calories: 400,
                 description: "Œufs, épinards, tomates, fromage de chèvre, pain complet",
-                nutriments: "P : 25 g, G : 30 g, L : 18 g"
+                nutrients: "P : 25 g, G : 30 g, L : 18 g"
             },
             {
                 title: "Toast ricotta et miel",
                 calories: 380,
                 description: "Pain complet, ricotta, miel, graines de lin",
-                nutriments: "P : 18 g, G : 45 g, L : 12 g"
+                nutrients: "P : 18 g, G : 45 g, L : 12 g"
             },
             {
                 title: "Bol muesli et fruits",
                 calories: 420,
                 description: "Muesli, lait végétal, fruits frais, amandes",
-                nutriments: "P : 20 g, G : 55 g, L : 15 g"
+                nutrients: "P : 20 g, G : 55 g, L : 15 g"
             }
         ],
         lunch: [
@@ -245,25 +245,25 @@ const menusDatabase = {
                 title: "Poulet et quinoa",
                 calories: 550,
                 description: "Filet de poulet grillé, quinoa, brocolis vapeur, avocat",
-                nutriments: "P : 40 g, G : 45 g, L : 20 g"
+                nutrients: "P : 40 g, G : 45 g, L : 20 g"
             },
             {
                 title: "Salade de saumon",
                 calories: 500,
                 description: "Saumon grillé, mélange de salades, quinoa, tomates cerises, vinaigrette légère",
-                nutriments: "P : 35 g, G : 30 g, L : 25 g"
+                nutrients: "P : 35 g, G : 30 g, L : 25 g"
             },
             {
                 title: "Buddha bowl végétarien",
                 calories: 480,
                 description: "Pois chiches, patate douce, avocat, quinoa, choux rouge",
-                nutriments: "P : 22 g, G : 55 g, L : 18 g"
+                nutrients: "P : 22 g, G : 55 g, L : 18 g"
             },
             {
                 title: "Tacos de poisson",
                 calories: 520,
                 description: "Poisson blanc grillé, tortillas complètes, salade, avocat, sauce légère",
-                nutriments: "P : 30 g, G : 40 g, L : 22 g"
+                nutrients: "P : 30 g, G : 40 g, L : 22 g"
             }
         ],
         snack: [
@@ -271,25 +271,25 @@ const menusDatabase = {
                 title: "Smoothie vert",
                 calories: 250,
                 description: "Épinards, banane, lait d'amande, protéine en poudre",
-                nutriments: "P : 20 g, G : 30 g, L : 5 g"
+                nutrients: "P : 20 g, G : 30 g, L : 5 g"
             },
             {
                 title: "Yaourt et fruits secs",
                 calories: 200,
                 description: "Yaourt grec nature, amandes, noix, miel",
-                nutriments: "P : 15 g, G : 15 g, L : 10 g"
+                nutrients: "P : 15 g, G : 15 g, L : 10 g"
             },
             {
                 title: "Muffin aux flocons d'avoine",
                 calories: 220,
                 description: "Flocons d’avoine, compote de pommes, œufs, dattes",
-                nutriments: "P : 10 g, G : 25 g, L : 8 g"
+                nutrients: "P : 10 g, G : 25 g, L : 8 g"
             },
             {
                 title: "Pomme et beurre d’amande",
                 calories: 180,
                 description: "Tranches de pomme avec beurre d’amande",
-                nutriments: "P : 5 g, G : 20 g, L : 8 g"
+                nutrients: "P : 5 g, G : 20 g, L : 8 g"
             }
         ],
         dinner: [
@@ -297,25 +297,25 @@ const menusDatabase = {
                 title: "Dahl de lentilles",
                 calories: 450,
                 description: "Lentilles corail, lait de coco, épices, riz basmati",
-                nutriments: "P : 25 g, G : 60 g, L : 12 g"
+                nutrients: "P : 25 g, G : 60 g, L : 12 g"
             },
             {
                 title: "Filet de blanc de dinde",
                 calories: 400,
                 description: "Blanc de dinde, purée de patate douce, haricots verts",
-                nutriments: "P : 35 g, G : 40 g, L : 10 g"
+                nutrients: "P : 35 g, G : 40 g, L : 10 g"
             },
             {
                 title: "Riz sauté aux crevettes",
                 calories: 480,
                 description: "Riz complet, crevettes, petits pois, carottes, sauce soja légère",
-                nutriments: "P : 30 g, G : 50 g, L : 15 g"
+                nutrients: "P : 30 g, G : 50 g, L : 15 g"
             },
             {
                 title: "Gratin de légumes au tofu",
                 calories: 430,
                 description: "Courgettes, carottes, tofu, fromage allégé, herbes de Provence",
-                nutriments: "P : 28 g, G : 35 g, L : 17 g"
+                nutrients: "P : 28 g, G : 35 g, L : 17 g"
             }
         ]
     },
@@ -325,25 +325,25 @@ const menusDatabase = {
                 title: "Œufs brouillés légers",
                 calories: 300,
                 description: "2 œufs, blanc d'œuf, épinards, champignons, pain complet",
-                nutriments: "P : 20 g, G : 25 g, L : 10 g"
+                nutrients: "P : 20 g, G : 25 g, L : 10 g"
             },
             {
                 title: "Smoothie bowl",
                 calories: 280,
                 description: "Fruits rouges, yaourt grec, graines de chia, flocons d'avoine",
-                nutriments: "P : 15 g, G : 35 g, L : 8 g"
+                nutrients: "P : 15 g, G : 35 g, L : 8 g"
             },
             {
                 title: "Toast avocat et œuf",
                 calories: 270,
                 description: "Pain complet, demi avocat, œuf poché",
-                nutriments: "P : 14 g, G : 20 g, L : 11 g"
+                nutrients: "P : 14 g, G : 20 g, L : 11 g"
             },
             {
                 title: "Pancakes légers",
                 calories: 290,
                 description: "Farine complète, œuf, yaourt nature, compote",
-                nutriments: "P : 16 g, G : 30 g, L : 6 g"
+                nutrients: "P : 16 g, G : 30 g, L : 6 g"
             }
         ],
         lunch: [
@@ -351,25 +351,25 @@ const menusDatabase = {
                 title: "Salade de thon",
                 calories: 450,
                 description: "Thon naturel, salade verte, tomates, concombre, œuf dur, vinaigrette légère",
-                nutriments: "P : 35 g, G : 20 g, L : 15 g"
+                nutrients: "P : 35 g, G : 20 g, L : 15 g"
             },
             {
                 title: "Poulet et légumes rôtis",
                 calories: 400,
                 description: "Blanc de poulet, courgettes, poivrons, aubergines, huile d'olive",
-                nutriments: "P : 40 g, G : 15 g, L : 12 g"
+                nutrients: "P : 40 g, G : 15 g, L : 12 g"
             },
             {
                 title: "Bowl vegan minceur",
                 calories: 420,
                 description: "Tofu, riz complet, légumes vapeur, graines de courge",
-                nutriments: "P : 30 g, G : 35 g, L : 10 g"
+                nutrients: "P : 30 g, G : 35 g, L : 10 g"
             },
             {
                 title: "Soupe repas",
                 calories: 350,
                 description: "Soupe de légumes, lentilles, pain complet",
-                nutriments: "P : 20 g, G : 30 g, L : 9 g"
+                nutrients: "P : 20 g, G : 30 g, L : 9 g"
             }
         ],
         snack: [
@@ -377,25 +377,25 @@ const menusDatabase = {
                 title: "Fromage blanc et fruits",
                 calories: 150,
                 description: "Fromage blanc 0%, pomme, cannelle",
-                nutriments: "P : 15 g, G : 20 g, L : 0 g"
+                nutrients: "P : 15 g, G : 20 g, L : 0 g"
             },
             {
                 title: "Bâtonnets de légumes",
                 calories: 100,
                 description: "Carottes, céleri, concombre, houmous léger",
-                nutriments: "P : 5 g, G : 10 g, L : 3 g"
+                nutrients: "P : 5 g, G : 10 g, L : 3 g"
             },
             {
                 title: "Galettes de riz et thon",
                 calories: 160,
                 description: "Galettes de riz, thon au naturel",
-                nutriments: "P : 12 g, G : 10 g, L : 5 g"
+                nutrients: "P : 12 g, G : 10 g, L : 5 g"
             },
             {
                 title: "Œuf dur et tomate",
                 calories: 120,
                 description: "Œuf dur, tomate cerise, herbes",
-                nutriments: "P : 10 g, G : 5 g, L : 7 g"
+                nutrients: "P : 10 g, G : 5 g, L : 7 g"
             }
         ],
         dinner: [
@@ -403,25 +403,25 @@ const menusDatabase = {
                 title: "Soupe et omelette",
                 calories: 350,
                 description: "Soupe de légumes maison, omelette aux herbes",
-                nutriments: "P : 25 g, G : 20 g, L : 12 g"
+                nutrients: "P : 25 g, G : 20 g, L : 12 g"
             },
             {
                 title: "Cabillaud vapeur",
                 calories: 300,
                 description: "Filet de cabillaud, ratatouille, riz complet",
-                nutriments: "P : 30 g, G : 25 g, L : 8 g"
+                nutrients: "P : 30 g, G : 25 g, L : 8 g"
             },
             {
                 title: "Tofu et légumes sautés",
                 calories: 330,
                 description: "Tofu, brocolis, champignons, sauce soja légère",
-                nutriments: "P : 20 g, G : 15 g, L : 12 g"
+                nutrients: "P : 20 g, G : 15 g, L : 12 g"
             },
             {
                 title: "Salade d'épeautre",
                 calories: 310,
                 description: "Épeautre, tomates, féta allégée, roquette",
-                nutriments: "P : 18 g, G : 30 g, L : 9 g"
+                nutrients: "P : 18 g, G : 30 g, L : 9 g"
             }
         ]
     },
@@ -431,25 +431,25 @@ const menusDatabase = {
                 title: "Crêpes protéinées",
                 calories: 600,
                 description: "Crêpes à la banane, œufs, flocons d'avoine, sirop d'érable, beurre de cacahuète",
-                nutriments: "P : 30 g, G : 75 g, L : 20 g"
+                nutrients: "P : 30 g, G : 75 g, L : 20 g"
             },
             {
                 title: "Toast à l'avocat",
                 calories: 550,
                 description: "Pain complet, avocat, œufs pochés, saumon fumé",
-                nutriments: "P : 25 g, G : 40 g, L : 30 g"
+                nutrients: "P : 25 g, G : 40 g, L : 30 g"
             },
             {
                 title: "Bol granola maison",
                 calories: 620,
                 description: "Granola, lait entier, fruits, graines de tournesol",
-                nutriments: "P : 25 g, G : 70 g, L : 22 g"
+                nutrients: "P : 25 g, G : 70 g, L : 22 g"
             },
             {
                 title: "Omelette au fromage",
                 calories: 580,
                 description: "Œufs, fromage râpé, pain de seigle, avocat",
-                nutriments: "P : 35 g, G : 40 g, L : 28 g"
+                nutrients: "P : 35 g, G : 40 g, L : 28 g"
             }
         ],
         lunch: [
@@ -457,25 +457,25 @@ const menusDatabase = {
                 title: "Steak et pommes de terre",
                 calories: 700,
                 description: "Steak haché 5%, patates douces rôties, haricots verts, sauce maison",
-                nutriments: "P : 50 g, G : 60 g, L : 25 g"
+                nutrients: "P : 50 g, G : 60 g, L : 25 g"
             },
             {
                 title: "Pâtes au saumon",
                 calories: 650,
                 description: "Pâtes complètes, saumon frais, crème légère, brocolis",
-                nutriments: "P : 40 g, G : 70 g, L : 20 g"
+                nutrients: "P : 40 g, G : 70 g, L : 20 g"
             },
             {
                 title: "Bowl riz et poulet curry",
                 calories: 680,
                 description: "Poulet au curry, riz basmati, noix de cajou, légumes grillés",
-                nutriments: "P : 45 g, G : 65 g, L : 24 g"
+                nutrients: "P : 45 g, G : 65 g, L : 24 g"
             },
             {
                 title: "Burger maison équilibré",
                 calories: 720,
                 description: "Pain complet, steak, cheddar, avocat, salade, sauce yaourt",
-                nutriments: "P : 40 g, G : 60 g, L : 30 g"
+                nutrients: "P : 40 g, G : 60 g, L : 30 g"
             }
         ],
         snack: [
@@ -483,25 +483,25 @@ const menusDatabase = {
                 title: "Shake hypercalorique",
                 calories: 400,
                 description: "Lait entier, banane, beurre de cacahuète, flocons d'avoine, miel",
-                nutriments: "P : 20 g, G : 50 g, L : 15 g"
+                nutrients: "P : 20 g, G : 50 g, L : 15 g"
             },
             {
                 title: "Barres énergétiques",
                 calories: 350,
                 description: "Mélange de fruits secs, noix, graines et miel",
-                nutriments: "P : 15 g, G : 40 g, L : 18 g"
+                nutrients: "P : 15 g, G : 40 g, L : 18 g"
             },
             {
                 title: "Pain complet et fromage",
                 calories: 300,
                 description: "Pain aux céréales, fromage frais, graines",
-                nutriments: "P : 18 g, G : 30 g, L : 14 g"
+                nutrients: "P : 18 g, G : 30 g, L : 14 g"
             },
             {
                 title: "Banane et lait chocolaté",
                 calories: 330,
                 description: "Banane, lait entier, cacao en poudre non sucré",
-                nutriments: "P : 14 g, G : 35 g, L : 12 g"
+                nutrients: "P : 14 g, G : 35 g, L : 12 g"
             }
         ],
         dinner: [
@@ -509,29 +509,30 @@ const menusDatabase = {
                 title: "Risotto aux champignons",
                 calories: 600,
                 description: "Riz arborio, champignons, parmesan, bouillon de légumes",
-                nutriments: "P : 25 g, G : 80 g, L : 20 g"
+                nutrients: "P : 25 g, G : 80 g, L : 20 g"
             },
             {
                 title: "Curry de poulet",
                 calories: 550,
                 description: "Cuisse de poulet, curry, lait de coco, riz basmati",
-                nutriments: "P : 40 g, G : 50 g, L : 25 g"
+                nutrients: "P : 40 g, G : 50 g, L : 25 g"
             },
             {
                 title: "Gratin de pâtes au thon",
                 calories: 640,
                 description: "Pâtes complètes, thon, béchamel légère, courgettes",
-                nutriments: "P : 35 g, G : 70 g, L : 18 g"
+                nutrients: "P : 35 g, G : 70 g, L : 18 g"
             },
             {
                 title: "Lasagnes maison",
                 calories: 680,
                 description: "Lasagnes à la viande, légumes, fromage, sauce tomate",
-                nutriments: "P : 45 g, G : 60 g, L : 28 g"
+                nutrients: "P : 45 g, G : 60 g, L : 28 g"
             }
         ]
     }
 };
+
 
 
         // Gestion du formulaire
