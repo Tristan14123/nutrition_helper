@@ -136,7 +136,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <!-- Résultats -->
         <section id="resultsSection" class="hidden bg-white rounded-xl shadow-md p-6 mb-8 slide-in">
             <h2 class="text-2xl font-bold text-gray-800 mb-6"><i class="fas fa-chart-line mr-2 text-purple-600"></i>Vos besoins nutritionnels</h2>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="bg-purple-50 rounded-lg p-6 border border-purple-100">
                     <h3 class="font-semibold text-purple-800 mb-2"><i class="fas fa-bolt mr-2"></i>Calories quotidiennes</h3>
@@ -172,7 +172,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <!-- Menus recommandés -->
         <section id="menusSection" class="hidden bg-white rounded-xl shadow-md p-6 slide-in">
             <h2 class="text-2xl font-bold text-gray-800 mb-6"><i class="fas fa-utensils mr-2 text-purple-600"></i>Menus recommandés</h2>
-            
+
             <div class="mb-6">
                 <h3 class="text-lg font-semibold text-gray-700 mb-3">Répartition des repas</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
@@ -510,7 +510,7 @@ const menusDatabase = {
                 description: "Œufs cuits au four avec crème et dés de jambon pour une entrée gourmande.",
                 nutrients: "P : 13 g, G : 1 g, L : 12 g"
               },
-              
+
               {
                 title: "Courgettes sautées au beurre",
                 calories: 90,
@@ -710,7 +710,7 @@ const menusDatabase = {
         // Gestion du formulaire
         document.getElementById('profileForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             // Récupération des valeurs
             const age = parseInt(document.getElementById('age').value);
             const weight = parseFloat(document.getElementById('weight').value);
@@ -718,7 +718,7 @@ const menusDatabase = {
             const activity = parseFloat(document.getElementById('activity').value);
             const gender = document.querySelector('input[name="gender"]:checked').value;
             const goal = document.getElementById('goal').value;
-            
+
             // Calcul du métabolisme de base (BMR)
             let bmr;
             if (gender === 'male') {
@@ -726,21 +726,21 @@ const menusDatabase = {
             } else {
                 bmr = 10 * weight + 6.25 * height - 5 * age - 161;
             }
-            
+
             // Calcul des besoins caloriques (TDEE)
             let tdee = bmr * activity;
-            
+
             // Ajustement selon l'objectif
             if (goal === 'lose') {
                 tdee = tdee * 0.85; // Réduction de 15% pour la perte de poids
             } else if (goal === 'gain') {
                 tdee = tdee * 1.15; // Augmentation de 15% pour la prise de poids
             }
-            
+
             // Calcul des macronutriments
             const proteins = Math.round(weight * 1.8); // 1.8g de protéine par kg de poids
             const proteinsCal = proteins * 4;
-            
+
             let fats, fatsCal;
             if (goal === 'lose') {
                 fats = Math.round((tdee * 0.25) / 9); // 25% des calories en lipides
@@ -749,13 +749,13 @@ const menusDatabase = {
                 fats = Math.round((tdee * 0.3) / 9); // 30% des calories en lipides
                 fatsCal = tdee * 0.3;
             }
-            
+
             const carbsCal = tdee - proteinsCal - fatsCal;
             const carbs = Math.round(carbsCal / 4);
-            
+
             // Calcul de l'eau recommandée
             const water = Math.round((weight * 0.035) * 10) / 10; // 35ml par kg de poids
-            
+
             // Affichage des résultats
             document.getElementById('caloriesResult').textContent = Math.round(tdee);
             document.getElementById('proteinsResult').textContent = proteins + 'g';
@@ -765,7 +765,7 @@ const menusDatabase = {
             document.getElementById('fatsResult').textContent = fats + 'g';
             document.getElementById('fatsPercent').textContent = Math.round((fatsCal / tdee) * 100);
             document.getElementById('waterResult').textContent = water + 'L';
-            
+
             // Ajustement des pourcentages de repas selon l'objectif
             if (goal === 'lose') {
                 document.getElementById('breakfastPercent').textContent = '30';
@@ -783,7 +783,7 @@ const menusDatabase = {
                 document.getElementById('snackPercent').textContent = '15';
                 document.getElementById('dinnerPercent').textContent = '25';
             }
-            
+
             // Affichage des sections de résultats
             document.getElementById('resultsSection').classList.remove('hidden');
             document.getElementById('menusSection').classList.remove('hidden');
@@ -791,83 +791,20 @@ const menusDatabase = {
             // Sauvegarde du profil dans localStorage
             const profileData = { age, weight, height, activity, gender, goal };
             localStorage.setItem('userProfile', JSON.stringify(profileData));
-            
-        function createMenuCard(menu, mealKey, mealLabel, totalCalories, goal) {
-    const percentage = Math.round((menu.calories / totalCalories) * 100);
-    const [p, g, l] = menu.nutrients.split(', ');
-
-    const card = document.createElement('div');
-    card.className = 'menu-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 transition duration-300';
-    card.innerHTML = `
-        <div class="p-5">
-            <div class="flex justify-between items-start mb-3">
-                <h3 class="text-xl font-bold text-gray-800">${mealLabel}</h3>
-                <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">${percentage}%</span>
-            </div>
-            <div class="h-32 mb-4 overflow-hidden rounded-lg">
-                <div class="w-full h-full bg-gradient-to-r from-${getRandomColor()}-400 to-${getRandomColor()}-500 flex items-center justify-center text-white font-bold text-xl">
-                    ${menu.title.split(' ')[0]}
-                </div>
-            </div>
-            <h4 class="font-semibold text-lg mb-2">${menu.title}</h4>
-            <p class="text-gray-600 mb-4">${menu.description}</p>
-            <div class="flex justify-between text-sm">
-                <span class="text-blue-600 font-medium">${p}</span>
-                <span class="text-green-600 font-medium">${g}</span>
-                <span class="text-yellow-600 font-medium">${l}</span>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                <span class="text-gray-700 font-medium">${menu.calories} kcal</span>
-                <div class="flex gap-2">
-                    <button class="text-purple-600 hover:text-purple-800 font-medium recipe-btn" data-recipe='${JSON.stringify(menu)}'>
-                        <i class="fas fa-utensils mr-1"></i>Voir recette
-                    </button>
-                    <button class="text-gray-500 hover:text-gray-700 text-sm replace-btn" data-meal="${mealKey}" data-current-title="${menu.title}">
-                        🔁 Remplacer
-                    </button>
-                </div>
-            </div>
-        </div>
-    `;
-
-    // Ajouter événements
-    card.querySelector('.recipe-btn').addEventListener('click', (e) => {
-        const recipe = JSON.parse(e.target.closest('button').dataset.recipe);
-        localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
-        window.location.href = 'recette.html';
-    });
-
-    card.querySelector('.replace-btn').addEventListener('click', (e) => {
-        const meal = e.target.dataset.meal;
-        const currentTitle = e.target.dataset.currentTitle;
-
-        const allOptions = menusDatabase[goal][meal];
-        let newOption;
-        do {
-            newOption = allOptions[Math.floor(Math.random() * allOptions.length)];
-        } while (newOption.title === currentTitle);
-
-        const newCard = createMenuCard(newOption, meal, mealLabel, totalCalories, goal);
-        menuContainer.replaceChild(newCard, card);
-    });
-
-    return card;
-}
 
 
-            
             // Génération des menus
             generateMenus(goal, Math.round(tdee));
-            
+
             // Scroll vers les résultats
             document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
         });
-        
+
         // Fonction pour générer les menus
         function generateMenus(goal, calories) {
             const menuContainer = document.getElementById('menuContainer');
             menuContainer.innerHTML = '';
-            
+
             const meals = ['breakfast', 'lunch', 'snack', 'dinner'];
             const mealNames = {
                 breakfast: 'Petit-déjeuner',
@@ -875,20 +812,16 @@ const menusDatabase = {
                 snack: 'Collation',
                 dinner: 'Dîner'
             };
-            
+
             // Sélection aléatoire de menus pour chaque repas
             meals.forEach(meal => {
-                if (!menusDatabase[goal] || !menusDatabase[goal][meal]) return;
-                const options = menusDatabase[goal][meal];
-                const selected = options[Math.floor(Math.random() * options.length)];
-                const card = createMenuCard(selected, meal, mealNames[meal], calories, goal);
-                menuContainer.appendChild(card);
-            });
-        }
-                
+                const availableMenus = menusDatabase[goal][meal];
+                const randomIndex = Math.floor(Math.random() * availableMenus.length);
+                const selectedMenu = availableMenus[randomIndex];
+
                 // Calcul du pourcentage de calories par rapport au total
                 const caloriePercentage = Math.round((selectedMenu.calories / calories) * 100);
-                
+
                 // Création de la carte de menu
                 const menuCard = document.createElement('div');
                 menuCard.className = 'menu-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 transition duration-300';
@@ -912,58 +845,24 @@ const menusDatabase = {
                         </div>
                         <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
                             <span class="text-gray-700 font-medium">${selectedMenu.calories} kcal</span>
-                            <div class="flex gap-2">
-                                <button class="text-purple-600 hover:text-purple-800 font-medium recipe-btn" data-recipe='${JSON.stringify(selectedMenu)}'>
-                                    <i class="fas fa-utensils mr-1"></i>Voir recette
-                                </button>
-                                <button class="text-gray-500 hover:text-gray-700 text-sm replace-btn" data-meal="${meal}" data-current-title="${selectedMenu.title}">
-                                    🔁 Remplacer
-                                </button>
-                            </div>
-                        </div>
+                           <button class="text-purple-600 hover:text-purple-800 font-medium recipe-btn" data-recipe='${JSON.stringify(selectedMenu)}'>
+                                <i class="fas fa-utensils mr-1"></i>Voir recette
+                           </button>
 
+                        </div>
+                    </div>
                 `;
-                
-                // Gestion du bouton "Voir recette"
+
+                menuContainer.appendChild(menuCard);
                 menuCard.querySelector('.recipe-btn').addEventListener('click', (e) => {
                     const recipe = JSON.parse(e.target.closest('button').dataset.recipe);
                     localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
                     window.location.href = 'recette.html';
                 });
-                
-                // Gestion du bouton "Remplacer"
-                menuCard.querySelector('.replace-btn').addEventListener('click', (e) => {
-                    const meal = e.target.dataset.meal;
-                    const currentTitle = e.target.dataset.currentTitle;
-                
-                    const allOptions = menusDatabase[goal][meal];
-                    let newOption;
-                    do {
-                        newOption = allOptions[Math.floor(Math.random() * allOptions.length)];
-                    } while (newOption.title === currentTitle); // éviter de reprendre le même
-                
-                    // Remplace la carte actuelle
-                    const newHTML = generateMenuCardHTML(newOption, meal, mealNames[meal], calories);
-                    const wrapper = document.createElement('div');
-                    wrapper.innerHTML = newHTML;
-                    const newCard = wrapper.firstElementChild;
-                
-                    // Re-bind des événements
-                    newCard.querySelector('.recipe-btn').addEventListener('click', (e) => {
-                        const recipe = JSON.parse(e.target.closest('button').dataset.recipe);
-                        localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
-                        window.location.href = 'recette.html';
-                    });
-                
-                    newCard.querySelector('.replace-btn').addEventListener('click', e.target.onclick);
-                
-                    menuContainer.replaceChild(newCard, menuCard);
-                });
-
 
             });
         }
-        
+
         // Fonction utilitaire pour obtenir une couleur aléatoire
         function getRandomColor() {
             const colors = ['purple', 'blue', 'green', 'yellow', 'red', 'indigo', 'pink'];
