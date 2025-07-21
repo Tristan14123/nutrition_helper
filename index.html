@@ -244,8 +244,6 @@ window.addEventListener('DOMContentLoaded', () => {
             infoModal.classList.add('hidden');
         });
 
-const menuContainer = document.getElementById('menuContainer');
-        
           // Base de données des menus
 const menusDatabase = {
     maintain: {
@@ -854,30 +852,13 @@ const menusDatabase = {
                         </div>
                     </div>
                 `;
-                // Voir recette
+
                 menuContainer.appendChild(menuCard);
                 menuCard.querySelector('.recipe-btn').addEventListener('click', (e) => {
                     const recipe = JSON.parse(e.target.closest('button').dataset.recipe);
                     localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
                     window.location.href = 'recette.html';
                 });
-                
-                // Remplacer
-                menucard.querySelector('.replace-btn').addEventListener('click', (e) => {
-                    const meal = e.currentTarget.dataset.meal;
-                    const currentTitle = e.currentTarget.dataset.currentTitle;
-                    const allOptions = menusDatabase[goal][meal];
-                    let newOption;
-                    do {
-                        newOption = allOptions[Math.floor(Math.random() * allOptions.length)];
-                    } while (newOption.title === currentTitle);
-        
-                    const newCard = createMenuCard(newOption, meal, mealLabel, totalCalories, goal);
-                    menuContainer.replaceChild(newCard, card);
-                });
-        
-                return card;
-                
 
             });
         }
