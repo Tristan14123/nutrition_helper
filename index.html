@@ -4,6 +4,26 @@
     <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#764ba2">
 <script>
+
+// Pré-remplissage des champs si données enregistrées
+window.addEventListener('DOMContentLoaded', () => {
+    const savedProfile = JSON.parse(localStorage.getItem('userProfile'));
+    if (savedProfile) {
+        document.getElementById('age').value = savedProfile.age;
+        document.getElementById('weight').value = savedProfile.weight;
+        document.getElementById('height').value = savedProfile.height;
+        document.getElementById('activity').value = savedProfile.activity;
+        document.getElementById('goal').value = savedProfile.goal;
+
+        const genderInputs = document.querySelectorAll('input[name="gender"]');
+        genderInputs.forEach(input => {
+            input.checked = input.value === savedProfile.gender;
+        });
+    }
+});
+
+
+
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("service-worker.js")
@@ -11,6 +31,7 @@
         .catch(err => console.error("❌ Service worker échoué", err));
     });
   }
+    
 </script>
 
     <meta charset="UTF-8">
@@ -766,6 +787,11 @@ const menusDatabase = {
             // Affichage des sections de résultats
             document.getElementById('resultsSection').classList.remove('hidden');
             document.getElementById('menusSection').classList.remove('hidden');
+
+            // Sauvegarde du profil dans localStorage
+            const profileData = { age, weight, height, activity, gender, goal };
+            localStorage.setItem('userProfile', JSON.stringify(profileData));
+
             
             // Génération des menus
             generateMenus(goal, Math.round(tdee));
