@@ -2,6 +2,10 @@
 const infoBtn = document.getElementById('infoBtn');
 const infoModal = document.getElementById('infoModal');
 const closeModal = document.getElementById('closeModal');
+const authModal = document.getElementById('authModal');
+const authBtn = document.getElementById('authBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const closeAuthModal = document.getElementById('closeAuthModal');
 
 infoBtn.addEventListener('click', () => {
     infoModal.classList.remove('hidden');
@@ -11,27 +15,78 @@ closeModal.addEventListener('click', () => {
     infoModal.classList.add('hidden');
 });
 
-// Pré-remplissage des champs si données enregistrées
-window.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const doc = await db.collection('profiles').doc('defaultUser').get();
-        if (doc.exists) {
-            const savedProfile = doc.data();
-            document.getElementById('age').value = savedProfile.age;
-            document.getElementById('weight').value = savedProfile.weight;
-            document.getElementById('height').value = savedProfile.height;
-            document.getElementById('activity').value = savedProfile.activity;
-            document.getElementById('goal').value = savedProfile.goal;
+authBtn.addEventListener('click', () => {
+    authModal.classList.remove('hidden');
+});
 
-            const genderInputs = document.querySelectorAll('input[name="gender"]');
-            genderInputs.forEach(input => {
-                input.checked = input.value === savedProfile.gender;
-            });
+closeAuthModal.addEventListener('click', () => {
+    authModal.classList.add('hidden');
+});
+
+logoutBtn.addEventListener('click', () => {
+    firebase.auth().signOut();
+});
+
+// Auth state listener
+firebase.auth().onAuthStateChanged(async (user) => {
+    if (user) {
+        // User is logged in
+        authBtn.classList.add('hidden');
+        logoutBtn.classList.remove('hidden');
+        authModal.classList.add('hidden');
+
+        // Load user profile
+        try {
+            const doc = await db.collection('profiles').doc(user.uid).get();
+            if (doc.exists) {
+                const savedProfile = doc.data();
+                document.getElementById('age').value = savedProfile.age;
+                document.getElementById('weight').value = savedProfile.weight;
+                document.getElementById('height').value = savedProfile.height;
+                document.getElementById('activity').value = savedProfile.activity;
+                document.getElementById('goal').value = savedProfile.goal;
+
+                const genderInputs = document.querySelectorAll('input[name="gender"]');
+                genderInputs.forEach(input => {
+                    input.checked = input.value === savedProfile.gender;
+                });
+            }
+        } catch (error) {
+            console.error("Error getting user profile: ", error);
         }
-    } catch (error) {
-        console.error("Error getting user profile: ", error);
+    } else {
+        // User is logged out
+        authBtn.classList.remove('hidden');
+        logoutBtn.classList.add('hidden');
     }
 });
+
+// Login form
+const loginForm = document.getElementById('loginForm');
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = loginForm['loginEmail'].value;
+    const password = loginForm['loginPassword'].value;
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .catch(err => {
+            console.error(err);
+            alert(err.message);
+        });
+});
+
+// Register form
+const registerForm = document.getElementById('registerForm');
+registerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = registerForm['registerEmail'].value;
+    const password = registerForm['registerPassword'].value;
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .catch(err => {
+            console.error(err);
+            alert(err.message);
+        });
+});
+
 
 //contenu de la base de données
 const menusDatabase = {
@@ -590,7 +645,12 @@ document.getElementById('profileForm').addEventListener('submit', function(e) {
 
     // Sauvegarde du profil dans localStorage
     const profileData = { age, weight, height, activity, gender, goal };
-    db.collection('profiles').doc('defaultUser').set(profileData);
+    const user = firebase.auth().currentUser;
+    if (user) {
+        db.collection('profiles').doc(user.uid).set(profileData);
+    } else {
+        alert("Vous devez être connecté pour enregistrer votre profil.");
+    }
 
 
     // Génération des menus
