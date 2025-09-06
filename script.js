@@ -81,9 +81,23 @@ loginForm.addEventListener('submit', (e) => {
 const registerForm = document.getElementById('registerForm');
 registerForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    const firstName = registerForm['registerFirstName'].value;
+    const lastName = registerForm['registerLastName'].value;
     const email = registerForm['registerEmail'].value;
     const password = registerForm['registerPassword'].value;
     firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(cred => {
+            return db.collection('profiles').doc(cred.user.uid).set({
+                firstName: firstName,
+                lastName: lastName,
+                age: null,
+                weight: null,
+                height: null,
+                activity: null,
+                goal: null,
+                gender: null
+            });
+        })
         .catch(err => {
             console.error(err);
             alert(err.message);
