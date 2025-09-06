@@ -93,33 +93,53 @@
       document.getElementById('carbDisplay').textContent = carb;
       document.getElementById('fatDisplay').textContent = fat;
 
-      // Ajout d'ingrédients fictifs (à enrichir dans ta DB si tu veux)
-      const ingredients = [
-        '💪 1 portion de protéines (poulet, tofu, œufs, etc.)',
-        '1 portion de féculents (quinoa, riz, pâtes complètes)',
-        'Légumes frais de saison',
-        '1 cuillère à soupe d’huile ou de sauce légère',
-        'Herbes, épices ou graines au goût'
-      ];
-      ingredients.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = item;
-        document.getElementById('recipeIngredients').appendChild(li);
-      });
+      // Ajout d'ingrédients
+      const ingredientsList = document.getElementById('recipeIngredients');
+      if (recipe.ingredients && recipe.ingredients.length > 0) {
+          recipe.ingredients.forEach(item => {
+              const li = document.createElement('li');
+              li.textContent = item;
+              ingredientsList.appendChild(li);
+          });
+      } else {
+          // Fallback pour les anciennes recettes sans ingrédients
+          const ingredients = [
+            '💪 1 portion de protéines (poulet, tofu, œufs, etc.)',
+            '1 portion de féculents (quinoa, riz, pâtes complètes)',
+            'Légumes frais de saison',
+            '1 cuillère à soupe d’huile ou de sauce légère',
+            'Herbes, épices ou graines au goût'
+          ];
+          ingredients.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            ingredientsList.appendChild(li);
+          });
+      }
 
-      // Étapes génériques à adapter si besoin
-      const steps = [
-        'Préparer tous les ingrédients frais.',
-        'Faire cuire les féculents et/ou légumes selon les besoins.',
-        'Cuire ou chauffer la protéine choisie.',
-        'Assembler dans une assiette ou un bol.',
-        'Assaisonner avec les herbes ou sauces recommandées.'
-      ];
-      steps.forEach(step => {
-        const li = document.createElement('li');
-        li.textContent = step;
-        document.getElementById('recipeSteps').appendChild(li);
-      });
+      // Ajout des étapes de préparation
+      const stepsList = document.getElementById('recipeSteps');
+      if (recipe.steps && recipe.steps.length > 0) {
+          recipe.steps.forEach(step => {
+              const li = document.createElement('li');
+              li.textContent = step;
+              stepsList.appendChild(li);
+          });
+      } else {
+        // Fallback pour les anciennes recettes sans étapes
+          const steps = [
+            'Préparer tous les ingrédients frais.',
+            'Faire cuire les féculents et/ou légumes selon les besoins.',
+            'Cuire ou chauffer la protéine choisie.',
+            'Assembler dans une assiette ou un bol.',
+            'Assaisonner avec les herbes ou sauces recommandées.'
+          ];
+          steps.forEach(step => {
+            const li = document.createElement('li');
+            li.textContent = step;
+            stepsList.appendChild(li);
+          });
+      }
     }
   </script>
 </body>

@@ -760,3 +760,65 @@ function getRandomColor() {
     const colors = ['purple', 'blue', 'green', 'yellow', 'red', 'indigo', 'pink'];
     return colors[Math.floor(Math.random() * colors.length)];
 }
+
+// Gestion du bouton de suggestion IA
+const aiSuggestionBtn = document.getElementById('ai-suggestion-btn');
+aiSuggestionBtn.addEventListener('click', async () => {
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        alert("Vous devez être connecté pour utiliser la suggestion par l'IA.");
+        return;
+    }
+
+    const goal = document.getElementById('goal').value;
+    const calories = parseInt(document.getElementById('caloriesResult').textContent);
+    const proteins = parseInt(document.getElementById('proteinsResult').textContent);
+    const carbs = parseInt(document.getElementById('carbsResult').textContent);
+    const fats = parseInt(document.getElementById('fatsResult').textContent);
+
+    if (isNaN(calories) || calories === 0) {
+        alert("Veuillez d'abord calculer vos besoins nutritionnels.");
+        return;
+    }
+
+    // Afficher un indicateur de chargement
+    aiSuggestionBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Génération en cours...';
+    aiSuggestionBtn.disabled = true;
+
+    // URL de la Cloud Function (assumant un déploiement sur Firebase Hosting)
+    const url = '/getAiRecipeSuggestion';
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                goal,
+                calories,
+                proteins,
+                carbs,
+                fats
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || `Erreur du serveur: ${response.statusText}`);
+        }
+
+        const recipe = await response.json();
+
+        localStorage.setItem('selectedRecipe', JSON.stringify(recipe));
+        window.location.href = 'recette.html';
+
+    } catch (error) {
+        console.error("Erreur lors de la suggestion IA:", error);
+        alert(`Une erreur est survenue: ${error.message}`);
+    } finally {
+        // Rétablir l'état initial du bouton
+        aiSuggestionBtn.innerHTML = '<i class="fas fa-robot mr-2"></i>Suggestion par l\'IA';
+        aiSuggestionBtn.disabled = false;
+    }
+});
