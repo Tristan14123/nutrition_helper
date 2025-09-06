@@ -5,6 +5,7 @@ const closeModal = document.getElementById('closeModal');
 const authModal = document.getElementById('authModal');
 const authBtn = document.getElementById('authBtn');
 const logoutBtn = document.getElementById('logoutBtn');
+const profileBtn = document.getElementById('profileBtn');
 const closeAuthModal = document.getElementById('closeAuthModal');
 
 infoBtn.addEventListener('click', () => {
@@ -33,6 +34,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
         // User is logged in
         authBtn.classList.add('hidden');
         logoutBtn.classList.remove('hidden');
+        profileBtn.classList.remove('hidden');
         authModal.classList.add('hidden');
 
         // Load user profile
@@ -58,6 +60,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
         // User is logged out
         authBtn.classList.remove('hidden');
         logoutBtn.classList.add('hidden');
+        profileBtn.classList.add('hidden');
     }
 });
 
